@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - stable
+  - 4
+dist: trusty
+sudo: required
+before_script:
+  - npm install
+script:
+  - npm test

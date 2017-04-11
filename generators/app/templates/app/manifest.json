@@ -1,0 +1,4 @@
+{
+  "name": "<%= name %>",
+  "short_name": "<%= name %>"
+}

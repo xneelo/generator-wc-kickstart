@@ -1,0 +1,11 @@
+{
+  "name": "<%= name %>",
+  "main": "index.html",
+  "version": "1.0.0",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.8.1"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^5.0.1"
+  }
+}

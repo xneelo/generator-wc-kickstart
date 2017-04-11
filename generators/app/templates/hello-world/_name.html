@@ -1,0 +1,52 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="<%= name %>">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+      p {
+        color: blue;
+      }
+    </style>
+
+    <input value="{{name::input}}">
+
+    <p>Hello [[name]]!</p>
+
+  </template>
+
+  <script>
+
+/*
+`<%= name %>` is an example element.
+
+@demo demo/index.html
+*/
+
+    Polymer({
+
+      is: '<%= name %>',
+
+      properties: {
+
+        /*
+         *The name to display
+         */
+        name: {
+          type: String,
+          value: 'world'
+        }
+
+      },
+
+      ready: function() {
+        
+      }
+
+    });
+  </script>
+</dom-module>

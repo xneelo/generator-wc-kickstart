@@ -1,0 +1,13 @@
+{
+  "name": "<%= name %>",
+  "main": "<%= name %>.html",
+  "version": "1.0.0",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.8.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.1.8",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.2.5",
+    "web-component-tester": "Polymer/web-component-tester#^5.0.1"
+  }
+}

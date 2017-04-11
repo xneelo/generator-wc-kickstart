@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= name %> demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script>
+      window.Polymer = { dom: 'shadow', lazyRegister: true };
+    </script>
+    <link rel="import" href="../polymer/polymer.html">
+    <link rel="import" href="../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../<%= name %>.html">
+  </head>
+  <body>
+    <style>
+      body {
+        font: normal 14px 'Open-sans', 'Roboto', sans-serif, arial;
+        color: #333;
+        background-color: #efefef;
+        display: flex;
+        justify-content: center;
+      }
+      .wrapper {
+        width: 100%;
+        max-width: 500px;
+      }
+      .demo-container {
+        padding-top: 2rem;
+        width: 100%;
+      }
+    </style>
+    <div class="wrapper">
+      <section class="demo-container">
+        <h4>Demo of basic usage.</h4>
+        <demo-snippet>
+          <template>
+            <<%= name %>></<%= name %>>
+          </template>
+        </demo-snippet> 
+      </section>
+    </div>
+  </body>
+</html>

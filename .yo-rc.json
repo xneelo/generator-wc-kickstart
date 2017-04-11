@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Hetzner",
+      "authorEmail": "ux@hetzner.co.za",
+      "authorUrl": ""
+    }
+  }
+}

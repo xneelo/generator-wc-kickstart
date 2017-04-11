@@ -1,0 +1,30 @@
+{
+  "name": "<%= name %>",
+  "description": "",
+  "version": "1.0.0",
+  "author": "",
+  "license": "MIT",
+  "main": "index.html",
+  "scripts": {
+    "start": "wc-server --no-cache --port 8080",
+    "build": "gulp build",
+    "test": "wct"
+  },
+  "dependencies": {
+    "wc-server": "hetznerZA/wc-server#v1.0.0"
+  },
+  "devDependencies": {
+    "css-slam": "^1.2.1",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-html-minifier": "^0.1.8",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-if": "^2.0.0",
+    "gulp-imagemin": "^3.1.0",
+    "gulp-uglify": "^2.1.2",
+    "html-minifier": "^3.4.1",
+    "merge-stream": "^1.0.0",
+    "polymer-build": "^0.9.1",
+    "web-component-tester": "^5.0.1"
+  }
+}

@@ -1,0 +1,19 @@
+# Large image required to run tests ~2.5GB
+
+FROM printminion/polymer-tester
+
+RUN mkdir /app
+WORKDIR /app
+
+RUN mkdir /app/node_modules
+RUN mkdir /app/bower_components
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+ADD bower.json /app
+ADD package.json /app
+
+RUN npm install -g bower
+RUN bower update --allow-root
+
+ADD test /app

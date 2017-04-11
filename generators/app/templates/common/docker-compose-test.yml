@@ -1,0 +1,12 @@
+version: '2.0'
+services:
+  <%= name %>-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    image: <%= name %>-test
+    command: polymer test
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/bower_components

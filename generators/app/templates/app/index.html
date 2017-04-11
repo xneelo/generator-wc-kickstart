@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= name %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="./manifest.json">
+    <base href="/">
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script>
+      window.Polymer = { dom: 'shadow', lazyRegister: true };
+    </script>
+    <link rel="import" href="bower_components/polymer/polymer.html">
+    <link rel="import" href="./src/<%= name %>.html">
+    <style>
+      body {
+        margin: 0;
+        font-size: 16px;
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <<%= name %>></<%= name %>>
+  </body>
+</html>

@@ -12,7 +12,7 @@ Yeoman generator for web-component projects. Kickstart your project with a selec
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-wc-kickstart using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and generator-wc-kickstart using [npm](https://www.npmjs.com/) as sudo (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo

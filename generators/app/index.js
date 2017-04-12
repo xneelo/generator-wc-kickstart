@@ -174,7 +174,6 @@ module.exports = class extends Generator {
   writing() {
 
     const name = this.props.name;
-    const type = this.props.type;
     const template = this.props.template;
   
     // Set the root to the selected template
@@ -188,11 +187,19 @@ module.exports = class extends Generator {
     );
 
     // Copy and rename main file
-    this.fs.copyTpl(
-      this.templatePath('_name.html'),
-      this.destinationPath(`${name}.html`),
-      this.props
-    );
+    if (template == 'app') {
+      this.fs.copyTpl(
+        this.templatePath('src/_name.html'),
+        this.destinationPath(`src/${name}.html`),
+        this.props
+      );
+    } else {
+      this.fs.copyTpl(
+        this.templatePath('_name.html'),
+        this.destinationPath(`${name}.html`),
+        this.props
+      );
+    }
 
     // Copy and rename test file
     this.fs.copyTpl(

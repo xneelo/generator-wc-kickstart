@@ -186,6 +186,13 @@ module.exports = class extends Generator {
       this.props
     );
 
+    // Copy all dot files
+    this.fs.copyTpl(
+      `${this.templatePath()}/**/.*`,
+      this.destinationPath(),
+      this.props
+    );
+
     // Copy and rename main file
     if (template == 'app') {
       this.fs.copyTpl(

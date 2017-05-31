@@ -43,7 +43,6 @@ function waitFor(stream) {
 
 function build() {
   return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
-
     // Lets create some inline code splitters in case you need them later in your build.
     let sourcesHtmlSplitter = new polymerBuild.HtmlSplitter();
     let dependenciesHtmlSplitter = new polymerBuild.HtmlSplitter();
@@ -52,29 +51,27 @@ function build() {
     console.log(`Deleting ${buildDirectory} directory...`);
     del([buildDirectory])
       .then(() => {
-
         // Let's start by getting your source files. These are all the files
         // in your `src/` directory, or those that match your polymer.json
         // "sources"  property if you provided one.
         console.log(`Optimizing sources...`);
         let sourcesStream = polymerProject.sources()
-        .pipe(sourcesHtmlSplitter.split()) // split inline JS & CSS out into individual .js & .css files
+        .pipe(sourcesHtmlSplitter.split()) // Split inline JS & CSS out into individual .js & .css files
         .pipe(gulpif(/\.js$/, uglify()))
         .pipe(gulpif(/\.css$/, cssSlam()))
         .pipe(gulpif(/\.html$/, htmlMin({
-            customAttrAssign: [{"source":"\\$="}],
-            customAttrSurround: [
-              [ {"source": "\\({\\{"}, {"source": "\\}\\}"} ],
-              [ {"source": "\\[\\["}, {"source": "\\]\\]"}  ]
-            ],
-            collapseWhitespace: true,
-            conservativeCollapse: true,
-            minifyJS: true,
-            minifyCSS: true,
-            removeComments: true
-          })))
-        .pipe(sourcesHtmlSplitter.rejoin()); // rejoins those files back into their original location
-
+          customAttrAssign: [{source: '\\$='}],
+          customAttrSurround: [
+              [{source: '\\({\\{'}, {source: '\\}\\}'}],
+              [{source: '\\[\\['}, {source: '\\]\\]'}]
+          ],
+          collapseWhitespace: true,
+          conservativeCollapse: true,
+          minifyJS: true,
+          minifyCSS: true,
+          removeComments: true
+        })))
+        .pipe(sourcesHtmlSplitter.rejoin()); // Rejoins those files back into their original location
 
         // Similarly, you can get your dependencies seperately and perform
         // any dependency-only optimizations here as well.
@@ -84,10 +81,10 @@ function build() {
           .pipe(gulpif(/\.js$/, uglify()))
           .pipe(gulpif(/\.css$/, cssSlam()))
           .pipe(gulpif(/\.html$/, htmlMin({
-            customAttrAssign: [{"source":"\\$="}],
+            customAttrAssign: [{source: '\\$='}],
             customAttrSurround: [
-              [ {"source": "\\({\\{"}, {"source": "\\}\\}"} ],
-              [ {"source": "\\[\\["}, {"source": "\\]\\]"}  ]
+              [{source: '\\({\\{'}, {source: '\\}\\}'}],
+              [{source: '\\[\\['}, {source: '\\]\\]'}]
             ],
             collapseWhitespace: true,
             conservativeCollapse: true,
@@ -96,7 +93,6 @@ function build() {
             removeComments: true
           })))
           .pipe(dependenciesHtmlSplitter.rejoin());
-
 
         // Okay, now let's merge your sources & dependencies together into a single build stream.
         console.log(`Building from streams...`);
@@ -113,7 +109,7 @@ function build() {
         // Okay, time to pipe to the build directory
         buildStream = buildStream.pipe(gulp.dest(buildDirectory));
 
-        // waitFor the buildStream to complete
+        // WaitFor the buildStream to complete
         return waitFor(buildStream);
       })
       .then(() => {
@@ -131,7 +127,7 @@ function build() {
         console.log('Build complete!');
         resolve();
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   });

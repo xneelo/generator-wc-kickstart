@@ -4,13 +4,14 @@ const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
 const validate = require('validate-element-name');
+const deepAssign = require('deep-assign');
 
 const templates = {
-  'app': {
+  app: {
     description: 'a standalone application template',
     defaultName: 'my-app'
   },
-  'element': {
+  element: {
     description: 'a reusable element template',
     defaultName: 'my-element'
   },
@@ -21,57 +22,60 @@ const templates = {
   }
 };
 
-const common = {
-  'travis': [
-    '.travis.yml'
-  ],
-  'docker': [
-    'Dockerfile',
-    'Dockerfile.test',
-    'docker-compose.yml',
-    'docker-compose-test.yml'
-  ]
-};
+// !! TODO !!
+// Include common files
+// Const common = {
+//   travis: [
+//     '.travis.yml'
+//   ],
+//   docker: [
+//     'Dockerfile',
+//     'Dockerfile.test',
+//     'docker-compose.yml',
+//     'docker-compose-test.yml'
+//   ]
+// };
 
 const getProjectName = () => {
   const dir = process.cwd();
   const name = dir.split('\\').pop();
   return name;
-}
+};
 
-const validateProjectName = (name) => {
+const validateProjectName = name => {
   const validity = validate(name);
   if (validity.isValid) {
     return true;
-  } else {
-    return validity.message;
   }
-}
+  return validity.message;
+};
 
-const getTemplateChoices = (templates) => {
+const getTemplateChoices = templates => {
   let list = [];
-  for(let template in templates) {
-    list.push(template + ' : ' + templates[template].description);
+  for (let template in templates) {
+    if (template) {
+      list.push(template + ' : ' + templates[template].description);
+    }
   }
   return list;
-}
+};
 
-const getTemplateNameFromAnswer = (answer) => {
+const getTemplateNameFromAnswer = answer => {
   const name = answer.split(' ')[0];
-  return name; 
-}
+  return name;
+};
 
-const getTemplateTypeFromAnswer = (answer) => {
+const getTemplateTypeFromAnswer = answer => {
   const name = answer.split(' ')[0];
   const type = templates[name].type ? templates[name].type : name;
   return type;
-}
+};
 
-const getTemplateDefault = (answer) => {
+const getTemplateDefault = answer => {
   const name = answer.split(' ')[0];
   const defaultName = templates[name].defaultName ? templates[name].defaultName : '';
   return defaultName;
-}
+};
 
 module.exports = class extends Generator {
 
@@ -79,19 +83,19 @@ module.exports = class extends Generator {
     super(args, opts);
 
     this.argument('name', {
-      type: String, 
+      type: String,
       required: false
     });
 
     this.argument('template', {
-      type: String, 
+      type: String,
       required: false,
       default: getTemplateTypeFromAnswer(Object.keys(templates)[0])
     });
 
     // Exit if name is invalid
     const name = this.options.name;
-    if (!!name) {
+    if (name) {
       const validity = validateProjectName(name);
       if (validity !== true) {
         this.log(chalk.red(validity));
@@ -106,19 +110,17 @@ module.exports = class extends Generator {
       this.log(chalk.red(`Template "${template}" does not exist. Select either ${types}.`));
       process.exit(1);
     }
-
   }
 
   prompting() {
-
     // Exit if arguments were set
-    if (!!this.options.name) {
+    if (this.options.name) {
       const type = getTemplateTypeFromAnswer(this.options.template);
       this.log(`Creating your ` + chalk.green(type) + ` named ` + chalk.green(this.options.name) + `...`);
       this.props = this.props || {};
       this.props.name = this.options.name;
       this.props.template = this.options.template;
-      this.props.installDependencies = !!!this.options.skipInstall;
+      this.props.installDependencies = Boolean(!this.options.skipInstall);
       return true;
     }
 
@@ -136,17 +138,17 @@ module.exports = class extends Generator {
       {
         type: 'input',
         name: 'name',
-        message: (answers) => {
+        message: answers => {
           const projectType = getTemplateTypeFromAnswer(answers.type);
           return `What should your ${projectType} be called?`;
         },
         validate: validateProjectName,
-        default: (answers) => {
+        default: answers => {
           const name = getProjectName();
           const validity = validateProjectName(name);
           let defaultName = null;
           if (validity === true) {
-            defaultName = name; 
+            defaultName = name;
           } else {
             defaultName = getTemplateDefault(answers.type);
           }
@@ -168,33 +170,31 @@ module.exports = class extends Generator {
         installDependencies: answers.installDependencies
       };
     });
-
   }
 
   writing() {
-
     const name = this.props.name;
     const template = this.props.template;
-  
+
     // Set the root to the selected template
     this.sourceRoot(this.templatePath(template));
 
-    // Copy everything but underscore files
+    // Copy everything but underscore (ejs template) files
     this.fs.copyTpl(
       `${this.templatePath()}/**/!(_)*`,
       this.destinationPath(),
       this.props
     );
 
-    // Copy all dot files
-    this.fs.copyTpl(
+    // Copy dot files
+    this.fs.copy(
       `${this.templatePath()}/**/.*`,
       this.destinationPath(),
-      this.props
+      deepAssign(this.props, {globOptions: {dot: true}})
     );
 
     // Copy and rename main file
-    if (template == 'app') {
+    if (template === 'app') {
       this.fs.copyTpl(
         this.templatePath('src/_name.html'),
         this.destinationPath(`src/${name}.html`),
@@ -214,17 +214,14 @@ module.exports = class extends Generator {
       this.destinationPath(`test/${name}.html`),
       this.props
     );
-
   }
 
   install() {
-
     const installDependencies = this.props.installDependencies;
 
     if (installDependencies) {
       this.installDependencies();
     }
-
   }
 
 };

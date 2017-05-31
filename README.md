@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/hetznerZA/generator-wc-kickstart.svg?branch=master)](https://travis-ci.org/hetznerZA/generator-wc-kickstart)
+
 # generator-wc-kickstart
 
 Yeoman generator for web-component projects. Kickstart your project with a selection of templates!

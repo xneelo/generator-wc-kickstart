@@ -1,0 +1,132 @@
+<!-- Import the required dependancies -->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<!--https://www.webcomponents.org/element/PolymerElements/paper-spinner/v1.2.1  -->
+
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+<!-- https://www.webcomponents.org/element/PolymerElements/paper-spinner/v1.2.1 -->
+
+<!-- Define the element -->
+<dom-module id="<%= name %>">
+
+  <!-- The HTML template for this element  -->
+  <template>
+
+    <!-- The style for this element  -->
+    <style>
+      /* The css selector for this element */
+      :host {
+        display: block;
+      }
+      p {
+        color: blue;
+      }
+      label {
+        padding-right: 0.25rem;
+      }
+    </style>
+
+    <!-- POST the body to httpbin.org  -->
+    <iron-ajax
+      id="ajax"
+      url="http://httpbin.org/post"
+      method="POST"
+      content-type="application/json"
+      handle-as="json"
+      last-response="{{ajaxResponse}}"
+      loading="{{ajaxLoading}}"
+    ></iron-ajax>
+
+    <!-- View & set the input value to the name property using two-way data-binding on the input event -->
+    <div>
+      <label for="input">Name</label>
+      <input id="input" value="{{name::input}}">
+    </div>
+
+    <!-- Display the sender from the fetched response json -->
+    <p>The sender of the request: <strong>[[ajaxResponse.json.sender]]</strong></p>
+
+    <!-- Set the spinner to active when ajax is busy loading  -->
+    <paper-spinner active="[[ajaxLoading]]"></paper-spinner>
+
+  </template>
+
+  <!-- The polymer object that defines this element  -->
+  <script>
+
+/*
+`<%= name %>` is an example element using async ajax.
+
+@demo demo/index.html
+*/
+
+    Polymer({
+
+      is: '<%= name %>',
+
+      properties: {
+
+        /*
+         * The name to display
+         */
+        name: {
+          type: String,
+          value: 'world',
+          observer: '_nameChanged'
+        },
+
+        /*
+         * The ajax response
+         */
+        ajaxResponse: {
+          type: Object
+        },
+
+        /*
+         * True if the ajax request is busy loading
+         */
+        ajaxLoading: {
+          type: Boolean,
+          value: false
+        },
+
+      },
+
+      /* Polymer Lifecycle - Called on element ready */
+      ready: function() {
+        console.log(this.is + ' is ready!');
+      },
+
+      /* Polymer Observer - Called on name property changed */
+      _nameChanged: function(newName) {
+        console.log('Name changed! New name =', newName);
+        // Debounce for 400ms so that we don't spam network requests..
+        this.debounce('my-debouncers-id', function() {
+          // Generate a request using the new data
+          this.generateRequest({ sender: newName });
+        }, 400);
+      },
+
+      /* Generate a request using the iron-ajax component */
+      generateRequest: function(data) {
+        // Shorthand queryselector using element id
+        var ajax = this.$.ajax; 
+
+        // Clear the current saved response
+        this.ajaxResponse = null; 
+
+        // Set the ajax body
+        ajax.body = data; 
+        
+        // Generate the request
+        var request = ajax.generateRequest();
+
+        // Return the request ES6 promise
+        return request;
+      },
+
+    });
+  </script>
+</dom-module>

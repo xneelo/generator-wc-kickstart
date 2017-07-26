@@ -13,6 +13,6 @@
     "wc-server": "hetznerZA/wc-server#v1.0.0"
   },
   "devDependencies": {
-    "web-component-tester": "^5.0.1"
+    "web-component-tester": "^6.0.0"
   }
 }

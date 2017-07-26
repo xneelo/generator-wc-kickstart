@@ -17,22 +17,31 @@ Yeoman generator for web-component projects. Kickstart your project with a selec
 First, install [Yeoman](http://yeoman.io) and generator-wc-kickstart using [npm](https://www.npmjs.com/) as sudo (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
-npm install -g yo
-npm install -g hetznerZA/generator-wc-kickstart
+$ npm install -g yo
+$ npm install -g hetznerZA/generator-wc-kickstart
 ```
 
 ## Usage
 
+### With prompts
+
 Run the command from your project directory and follow the prompts:
 
 ```bash
-yo wc-kickstart
+$ yo wc-kickstart
 ```
 
-You can view the usage guide for more help:
+### With arguments
+
+Using the cli
+```bash
+$ yo wc-kickstart --template=app --name=my-app
+```
+
+View the usage guide for avaible arguments:
 
 ```bash
-yo wc-kickstart --help
+$ yo wc-kickstart --help
 ```
 
 ## License

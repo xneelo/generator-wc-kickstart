@@ -1,6 +1,6 @@
 # <<%= name %>>
 
-`<%= name %>` is a standalone web-app built with [Polymer](https://www.polymer-project.org/).
+`<%= name %>` is a reusable element built with [Polymer](https://www.polymer-project.org/).
 
 ## Developement environment
 
@@ -29,11 +29,6 @@ $ npm test
 
 Run wct tests in browser with locally hosted content.
 [http://localhost:8080/<%= name %>/test/index.html](http://localhost:8080/<%= name %>/test/index.html)
-
-### Docs
-
-View the locally hosted documentation.
-[http://localhost:8080/docs/index.html](http://localhost:8080/docs/index.html)
 
 ## Resources
 

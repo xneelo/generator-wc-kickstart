@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= name %> tests</title>
+    <meta charset="utf-8">
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../<%= name %>.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <<%= name %>></<%= name %>>
+      </template>
+    </test-fixture>
+
+    <script>
+      'use strict';
+
+      suite('basic', function() {
+
+        var element;
+        setup(function() {
+          element = fixture('basic');
+        });
+
+        test('it can instantiate', function() {
+          assert.equal(element.is, '<%= name %>');
+        });
+
+      });
+
+    </script>
+  </body>
+</html>

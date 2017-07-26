@@ -4,7 +4,7 @@ const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
 const validate = require('validate-element-name');
-const deepAssign = require('deep-assign');
+const path = require('path');
 
 const templates = {
   app: {
@@ -18,6 +18,11 @@ const templates = {
   'hello-world': {
     description: 'an example element to get you started',
     defaultName: 'hello-world',
+    type: 'example'
+  },
+  'hello-ajax': {
+    description: 'an example element using async ajax',
+    defaultName: 'hello-ajax',
     type: 'example'
   }
 };
@@ -115,12 +120,15 @@ module.exports = class extends Generator {
   prompting() {
     // Exit if arguments were set
     if (this.options.name) {
+      // Respond
       const type = getTemplateTypeFromAnswer(this.options.template);
-      this.log(`Creating your ` + chalk.green(type) + ` named ` + chalk.green(this.options.name) + `...`);
+      this.log(chalk.whiteBright(`Creating your ${chalk.green(type)} named ${chalk.green(this.options.name)}...`));
+      // Set properties from options
       this.props = this.props || {};
       this.props.name = this.options.name;
       this.props.template = this.options.template;
       this.props.installDependencies = Boolean(!this.options.skipInstall);
+      this.props.confirm = true;
       return true;
     }
 
@@ -157,8 +165,32 @@ module.exports = class extends Generator {
       },
       {
         type: 'confirm',
+        name: 'createDirectory',
+        message: answers => {
+          return `Would you like me to create the project directory '/${answers.name}'`;
+        },
+        when: answers => {
+          let currentDir = process.cwd();
+          let currentFolderName = currentDir.match(/([^\\]*)\\*$/)[1];
+          return currentFolderName !== answers.name;
+        },
+        default: true
+      },
+      {
+        type: 'confirm',
         name: 'installDependencies',
-        message: 'Would you like me to install the required dependencies?',
+        message: 'Would you like me to install the required npm & bower dependencies?',
+        default: true
+      },
+      {
+        type: 'confirm',
+        name: 'confirm',
+        message: answers => {
+          let type = getTemplateTypeFromAnswer(answers.type);
+          let currentDir = process.cwd();
+          let installDir = answers.createDirectory ? currentDir + '\\' + answers.name : currentDir;
+          return `Install ${type} in '${installDir}'?`;
+        },
         default: true
       }
     ];
@@ -167,7 +199,9 @@ module.exports = class extends Generator {
       this.props = {
         template: getTemplateNameFromAnswer(answers.type),
         name: answers.name,
-        installDependencies: answers.installDependencies
+        installDependencies: answers.installDependencies,
+        createDirectory: answers.createDirectory,
+        confirm: answers.confirm
       };
     });
   }
@@ -175,6 +209,20 @@ module.exports = class extends Generator {
   writing() {
     const name = this.props.name;
     const template = this.props.template;
+    const createDirectory = this.props.createDirectory;
+    const confirm = this.props.confirm;
+
+    // Exit if not confimed
+    if (!confirm) {
+      this.log(chalk.whiteBright(('\r\nExiting generator...')));
+      process.exit();
+    }
+
+    // Update destinationPath
+    if (createDirectory) {
+      let directory = path.join(process.cwd(), name);
+      this.destinationRoot(directory);
+    }
 
     // Set the root to the selected template
     this.sourceRoot(this.templatePath(template));
@@ -186,11 +234,11 @@ module.exports = class extends Generator {
       this.props
     );
 
-    // Copy dot files
+    // Copy gitignore
+    // NOTE: yo doesn't want to copy dot files from templates
     this.fs.copy(
-      `${this.templatePath()}/**/.*`,
-      this.destinationPath(),
-      deepAssign(this.props, {globOptions: {dot: true}})
+      this.templatePath('_gitignore'),
+      this.destinationPath(`.gitignore`)
     );
 
     // Copy and rename main file

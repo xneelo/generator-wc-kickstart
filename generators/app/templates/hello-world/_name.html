@@ -1,24 +1,40 @@
+<!-- Import the required dependancies -->
+
 <link rel="import" href="../polymer/polymer.html">
 
+<!-- Define the element -->
 <dom-module id="<%= name %>">
 
+  <!-- The HTML template for this element  -->
   <template>
 
+    <!-- The style for this element  -->
     <style>
+      /* The css selector for this web-component */
       :host {
         display: block;
+        background-color: #efefef;
       }
       p {
         color: blue;
       }
     </style>
 
+    <!-- View & set the input value to the name property using two-way data-binding on the input event -->
     <input value="{{name::input}}">
 
+    <!-- Display the name property using one-way data-binding -->
     <p>Hello [[name]]!</p>
+
+    <!-- Manipulate the property using one-way data-binding with a local method -->
+    <p>Gooday Sir [[_capatalize(name)]]!</p>
+
+    <!-- Display the name length from the computed property  -->
+    <p>Your name is '[[nameLength]]' characters long.</p>
 
   </template>
 
+  <!-- The polymer object that defines this element  -->
   <script>
 
 /*
@@ -34,18 +50,38 @@
       properties: {
 
         /*
-         *The name to display
+         * The name to display
          */
         name: {
           type: String,
           value: 'world'
-        }
+        },
+
+        /*
+         * The name length computed from the name
+         */
+        nameLength: {
+          type: Number,
+          computed: '_computeNameLength(name)'
+        },
 
       },
 
+      /* Polymer Lifecycle - Called on element ready */
       ready: function() {
-        
-      }
+        console.log(this.is + ' is ready!');
+      },
+
+      /* Private: Returns the capatalized string  */
+      _capatalize: function(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      },
+
+      /* Private: Compute the length of the provided name */
+      _computeNameLength: function(name) {
+        name = name || '';
+        return name.length;
+      },
 
     });
   </script>

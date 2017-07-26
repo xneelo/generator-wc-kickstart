@@ -8,9 +8,10 @@ Yeoman generator for web-component projects. Kickstart your project with a selec
 
 ## Features
 
-* A polymer **standalone application** template
-* A polymer **reusable element** template
-* A polymer **hello-world** template
+* A polymer 1.x **standalone application** template
+* A polymer 1.x **reusable element** template
+* A polymer 1.x **hello-world** template
+* A polymer 1.x **hello-ajax** template
 
 ## Installation
 
@@ -33,7 +34,7 @@ $ yo wc-kickstart
 
 ### With arguments
 
-Using the cli
+Run the command from your project directory:
 ```bash
 $ yo wc-kickstart --template=app --name=my-app
 ```

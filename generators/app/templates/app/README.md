@@ -2,7 +2,7 @@
 
 `<%= name %>` is a standalone web-app built with [Polymer](https://www.polymer-project.org/).
 
-## Developement environment
+## Development environment
 
 This project requires **[npm](https://www.npmjs.com/)** and **[bower](https://bower.io/#install-bower)** to be installed.
 
